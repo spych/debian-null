@@ -30,6 +30,12 @@ sudo apt autoremove -y
 
 
 
+# Remove Bloat --------------------------------------------------
+sudo apt --purge remove -y gnome-2048 aisleriot gnome-chess gnome-contacts baobab five-or-more four-in-a-row yelp hitori eog gnome-klotski lightsoff gnome-mahjongg gnome-mines gnome-nibbles malcontent seahorse quadrapassel iagno rhythmbox gnome-robots gnome-sudoku swell-foop tali gnome-taquin gnome-tetravex gnome-todo gnome-weather anth* goldendict mozc* gnome-maps gnome-calculator gnome-calendar cheese xiterm+thai 
+#----------------------------------------------------------------
+
+
+
 # Grub-Customizer Repository -----------------------------------
 
 add-apt-repository ppa:danielrichter2007/grub-customizer -y
