@@ -1,0 +1,274 @@
+#! /bin/bash
+
+# Input Section--------------------------------------------------
+echo -n "Username [lowercase] : "
+read usr
+echo " "
+# Bashrc
+echo "===================================="
+echo -n "Bash Username : "
+read name
+echo "===================================="
+
+echo ""
+echo -n "Implement Root Deploy [y/n] : "
+read rt
+echo -n "Install Grub [y/n] : "
+read gr
+echo -n "Install Plymouth [y/n] : "
+read pl
+#------------------------------------------------------------
+
+
+
+# Initial Setup -------------------------------------------------
+sudo rm -rf /var/lib/apt/lists/*
+sudo apt-get update -o Acquire::CompressionTypes::Order::=gz
+sudo apt-get update -y && sudo apt-get upgrade -y
+sudo apt autoremove -y
+#----------------------------------------------------------------
+
+
+
+# Grub-Customizer Repository -----------------------------------
+
+add-apt-repository ppa:danielrichter2007/grub-customizer -y
+# ---------------------------------------------------------------
+
+
+
+# Installing Primary APT's --------------------------------------
+
+apt update -y
+
+apt install software-properties-common apt-transport-https curl gnome-tweaks gnome-shell-extensions vim tree nala -y 
+# ---------------------------------------------------------------
+
+
+
+# Sublime Text Repository ---------------------------------------
+
+wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/sublimehq-archive.gpg
+
+echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
+# ---------------------------------------------------------------
+
+
+
+# Visual Studio Code Repository -------------------------------
+
+wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+
+sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
+
+sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+
+# ---------------------------------------------------------------
+
+
+
+# Brave Repository --------------------------------------------
+
+curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+
+echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list
+# ---------------------------------------------------------------
+
+
+
+# Firefox ReRepository ----------------------------------------
+
+snap remove firefox
+
+add-apt-repository ppa:mozillateam/ppa -y
+
+echo '
+Package: *
+Pin: release o=LP-PPA-mozillateam
+Pin-Priority: 1001
+' | sudo tee /etc/apt/preferences.d/mozilla-firefox
+
+echo 'Unattended-Upgrade::Allowed-Origins:: "LP-PPA-mozillateam:${distro_codename}";' | sudo tee /etc/apt/apt.conf.d/51unattended-upgrades-firefox
+
+# ---------------------------------------------------------------
+
+
+
+# Installing Other Softwares ------------------------------------
+apt update -y
+
+apt install firefox -y
+
+# ---------------------------------------------------------------
+
+
+# Bash Alias ----------------------------------------------------
+
+cat ./Files/aliases >> /home/$usr/.bash_aliases
+
+sed -i "s/placeholder/$name/g" /home/$usr/.bash_aliases
+
+chown -R $usr /home/$usr/.bash_aliases
+
+if (( $rt == "y" ))
+then
+    cat ./Files/aliases >> /root/.bash_aliases
+    sed -i "s/placeholder/ELENCHOS/g" /root/.bash_aliases
+    sed -i "s/32m/31m/g" /root/.bash_aliases
+fi
+# ---------------------------------------------------------------
+
+
+
+# Vimrc----------------------------------------------------------
+
+cp ./Files/vim /home/$usr/.vimrc
+chown -R $usr /home/$usr/.vimrc
+
+if (( $rt == "y" ))
+then 
+    cp ./Files/vim /root/.vimrc
+fi
+# ---------------------------------------------------------------
+
+
+
+# Extensions Setup ----------------------------------------------
+
+mkdir -p /home/$usr/.local/share/gnome-shell/extensions
+
+unzip -d /home/$usr/.local/share/gnome-shell/extensions ./Compressions/Shell-Extensions.zip
+
+chown -R $usr /home/$usr/.local/share/gnome-shell/extensions
+# ---------------------------------------------------------------
+
+
+
+# Icons----------------------------------------------------------
+
+mkdir -p /home/$usr/.icons
+unzip -d /home/$usr/.icons ./Compressions/Icon.zip
+chown -R $usr /home/$usr/.icons
+
+if (( $rt == "y" ))
+then
+    mkdir /root/.icons
+    unzip -d /root/.icons ./Compressions/Icon.zip
+fi 
+# ---------------------------------------------------------------
+
+
+
+# Themes --------------------------------------------------------
+
+mkdir -p /home/$usr/.themes
+unzip -d /home/$usr/.themes ./Compressions/Theme.zip
+chown -R $usr /home/$usr/.themes
+
+if (( $rt == "y" ))
+then
+    mkdir /root/.themes
+    unzip -d /root/.themes ./Compressions/Theme.zip
+fi 
+# ---------------------------------------------------------------
+
+
+
+# Cursors -------------------------------------------------------
+
+mkdir -p /home/$usr/.local/share/icons
+unzip -d /home/$usr/.local/share/icons ./Compressions/Cursor.zip
+chown -R $usr /home/$usr/.local/share/icons
+
+if (( $rt == "y" ))
+then
+    mkdir -p /root/.local/share/icons
+    unzip -d /root/.local/share/icons ./Compressions/Cursor.zip
+fi 
+
+# ---------------------------------------------------------------
+
+
+
+# Copying Wallpapers --------------------------------------------
+
+unzip -d /home/$usr/Pictures ./Compressions/Pictures.zip
+chown -R $usr /home/$usr/Pictures/*
+
+# ---------------------------------------------------------------
+
+
+
+# Grub Repository ---------------------------------------------
+
+if (( $gr == "y" ))
+then
+    apt install grub-customizer
+
+    mkdir -p /boot/grub/themes
+
+    unzip -d /boot/grub/themes ./Compressions/Grub-Theme.zip
+
+    echo '''GRUB_THEME="/boot/grub/themes/monterey-grub-theme/theme.txt"''' >> /etc/default/grub
+
+    update-grub
+fi
+# ---------------------------------------------------------------
+
+
+
+# Plymouth Setup ------------------------------------------------
+
+if (( $pl == "y" ))
+then
+    mkdir -p /usr/share/plymouth/themes
+
+    unzip -d /usr/share/plymouth/themes ./Compressions/Plymouth-Theme.zip
+
+    update-alternatives --install /usr/share/plymouth/themes/default.plymouth default.plymouth /usr/share/plymouth/themes/linuxtext/linuxtext.plymouth 800
+
+    update-alternatives --set default.plymouth /usr/share/plymouth/themes/linuxtext/linuxtext.plymouth
+
+    sudo update-initramfs -u
+fi
+# ---------------------------------------------------------------
+
+
+
+# VSCode Configuration ------------------------------------------
+
+mkdir -p /home/$usr/.vscode/
+
+unzip -d /home/$usr/.vscode ./Compressions/VSCode.zip
+
+chown -R $usr /home/$usr/.vscode
+#---------------------------------------------------------------
+
+
+
+# System Configuration -----------------------------------------
+
+mkdir -p /home/$usr/.vscode/
+
+unzip -d /home/$usr/.vscode ./Compressions/VSCode.zip
+
+chown -R $usr /home/$usr/.vscode
+
+if (( $rt == "y" ))
+then
+    mkdir /root/.vscode/
+    unzip -d /root/.vscode ./Compressions/VSCode.zip
+fi
+
+echo 'set completion-ignore-case On' >> /home/$usr/.inputrc
+
+chown -R $usr /home/$usr/.inputrc
+
+echo 'set completion-ignore-case On' >> /root/.inputrc
+
+cp ./Files/user /home/$usr/.config/dconf/
+
+chown -R $usr /home/$usr/.config/dconf/user
+# ---------------------------------------------------------------
+
+reboot

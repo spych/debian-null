@@ -1,0 +1,82 @@
+
+# Default Aliases -------------------------------------------------------------------------
+alias i="sudo nala install -y"
+alias r="sudo apt --purge remove -y"
+alias c="clear"
+alias q="exit"
+alias v="vim"
+alias h="history"
+alias d="date"
+alias t="time"
+alias cl="clear;ls"
+#------------------------------------------------------------------------------------------
+
+
+
+# Package Control--------------------------------------------------------------------------
+# Install
+alias di="sudo dpkg install"
+alias diy="sudo dpkg install -y"
+
+alias ai="sudo apt install"
+alias aiy="sudo apt install -y"
+
+alias ni="sudo nala install"
+alias niy="sudo nala install -y"
+ 
+# Update & Upgrade 
+alias ad="sudo apt update"
+alias ady="sudo apt update -y"
+alias ag="sudo apt upgrade"
+alias agy="sudo apt upgrade -y"
+alias agd="sudo apt upgrade && sudo apt update"
+alias agdy="sudo apt upgrade -y && sudo apt update -y"
+
+alias nd="sudo nala update"
+alias ndy="sudo nala update -y"
+alias ng="sudo nala upgrade"
+alias ngy="sudo nala upgrade -y"
+alias ngd="sudo nala upgrade && sudo nala update"
+alias ngdy="sudo nala upgrade -y && sudo nala update -y"
+#------------------------------------------------------------------------------------------
+
+
+
+# Navigation Control ----------------------------------------------------------------------
+alias home="cd ~"
+alias ~="cd ~"
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+#------------------------------------------------------------------------------------------
+
+
+
+# Software Aliases -----------------------------------------------------------------------
+alias evince="evince & disown && exit"
+alias pdf="evince & disown && exit"
+alias brwsr="brave-browser & disown & gnome-terminal & exit"
+alias incog="brave-browser --incognito & disown & gnome-terminal & exit"
+alias firefox="firefox & disown & exit"
+
+#------------------------------------------------------------------------------------------
+
+
+
+# System Aliases --------------------------------------------------------------------------
+alias slp="systemctl suspend && exit"
+alias sus="systemctl suspend && exit"
+alias sd="poweroff"
+alias rb="reboot"
+alias sdf="sudo shutdown now"
+alias srb="sudo shutdown -r now"
+#------------------------------------------------------------------------------------------
+
+
+# Prompt Aliases---------------------------------------------------------------------------
+alias pstime='PS1="\n ╭\[\e[1;35m\]❨\[\e[0m\]\[\e[1;37m\] \w \[\e[0m\]\[\e[1;35m\]❩\[\e[0m\]\n ╰\[\e[1;37m\](\[\e[0m\]\[\e[1;35m\]placeholder\[\e[0m\]\[\e[1;37m\])\[\e[0m\]\[\e[1;35m\]⸻ ⸻ ⸻  \[\e[0m\]\[\e[1;37m\]❯ \[\e[0m\]" && clear'
+
+PS1="\n \[\e[1;37m\]╭\[\e[0m\]\[\e[1;32m\]❨\[\e[0m\]\[\e[1;37m\] \w \[\e[0m\]\[\e[1;32m\]❩\[\e[0m\]\n \[\e[1;37m\]╰\[\e[0m\]\[\e[1;37m\](\[\e[0m\]\[\e[1;32m\]placeholder\[\e[0m\]\[\e[1;37m\])\[\e[0m\]\[\e[1;32m\]⸻ ⸻ ⸻  \[\e[0m\]\[\e[1;37m\] ❯ \[\e[0m\]"
+#------------------------------------------------------------------------------------------
+

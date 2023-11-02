@@ -1,0 +1,24 @@
+
+sudo rm -rf /var/lib/apt/lists/*
+sudo apt-get update -o Acquire::CompressionTypes::Order::=gz
+sudo apt-get update && sudo apt-get upgrade
+
+
+sudo rm -rvf /var/lib/apt/lists/*
+echo "APT::Cache-Limit "100000000";" >> /etc/apt/apt.conf.d/70debconf
+
+
+sudo rm -rvf /var/lib/apt/lists/* 
+&& sudo mv /var/lib/dpkg/status /var/lib/dpkg/status-bad 
+&& sudo cp /var/lib/dpkg/status-old /var/lib/dpkg/status 
+&& sudo apt-get update
+
+
+sudo apt-get autoclean && sudo apt-get autoremove -y && sudo apt-get update
+
+
+sudo rm -rf /var/lib/apt/lists
+sudo apt-get clean
+sudo apt-get update
+
+

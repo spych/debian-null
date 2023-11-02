@@ -1,0 +1,16 @@
+set showmode
+set tabstop=4 softtabstop=4
+set shiftwidth=4 
+set wrap
+set expandtab
+set clipboard=unnamed
+syntax on
+set nocompatible
+set path+=**
+nnoremap <C-I> i <ESC>r
+inoremap jk <esc>
+set smartcase
+set smartindent
+set noswapfile
+set nobackup
+set undodir=~/.vim/undodir
